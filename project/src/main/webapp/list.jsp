@@ -13,10 +13,10 @@
         </form>
     </div>
      <% ArrayList<Integer> postids = (ArrayList<Integer>) request.getAttribute("postids") %>
-    <%--<% ArrayList<String> titles = (ArrayList<String>) request.getAttribute("titles") %>
+    <% ArrayList<String> titles = (ArrayList<String>) request.getAttribute("titles") %>
     <% ArrayList<Timestamp> modifieds = (ArrayList<Timestamp>) request.getAttribute("modifieds") %>
-    <% ArrayList<Timestamp> createds = (ArrayList<Timestamp>) request.getAttribute("createds") %> --%>
-    <%-- <table>
+    <% ArrayList<Timestamp> createds = (ArrayList<Timestamp>) request.getAttribute("createds") %>
+    <table>
         <tr><th>Title</th><th>Created</th><th>Modified</th><th>&nbsp;</th></tr>
         <c:forEach var="id" items="${postids}" varStatus="status">
             <tr>
@@ -33,6 +33,6 @@
                 </form>
             </tr>
         </c:forEach> 
-    </table> --%>
+    </table>
 </body>
 </html>
