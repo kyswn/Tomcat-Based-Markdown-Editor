@@ -430,8 +430,8 @@ public class Editor extends HttpServlet {
             return;
         }
         Connection conn = null;
-            PreparedStatement ps = null;
-            ResultSet rs = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try{
             System.out.println("going into db");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/CS144", "cs144", "");
@@ -532,6 +532,47 @@ public class Editor extends HttpServlet {
             return;
         }
         //TODO actually get the list
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            System.out.println("going into db");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/CS144", "cs144", "");
+            ps = conn.prepareStatement(
+                "SELECT postid, title, modified, created FROM Posts WHERE username = ? SORT BY postid"
+            );
+            ps.setString(1,username);
+            rs= ps.executeQuery();
+            ArrayList<Integer> postids = new ArrayList();
+            ArrayList<String> titles = new ArrayList();
+            ArrayList<Timestamp> modifieds = new ArrayList();
+            ArrayList<Timestamp> createds =  new ArrayList();
+            while(rs.next()){
+                postids.add(rs.getInt("postid"));
+                titles.add(rs.getString("title"));
+                modifieds.add(rs.getTimestamp("modified"));
+                createds.add(rs.getTimestamp("created"));
+            }
+            request.setAttribute("postids",postids);
+            request.setAttribute("titles",titles);
+            request.setAttribute("modifieds",modifieds);
+            request.setAttribute("createds",createds);
+
+
+
+        }
+         catch(Exception e){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            System.out.println("there is some problem when extracting the list of records");
+        }
+        finally{
+            System.out.println("int the finally block closing connections");
+            try { rs.close(); } catch (Exception e) {System.out.println("error when closing resultset rs"); }
+            try { ps.close(); } catch (Exception e) {System.out.println("error when closing prepareStatement ps"); }
+            try { conn.close(); } catch (Exception e) {System.out.println("error when closing connection conn");} 
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
 
 
 
