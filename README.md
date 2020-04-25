@@ -8,3 +8,6 @@ new edit.java, now lacking list parameters
 
 4/24/ 20:09 
 new edit.java, shoudl be complete now
+
+4/25 13:05
+fixed the bug in list_handler
