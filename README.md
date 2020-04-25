@@ -5,3 +5,6 @@ This is the skeleton provided by the professor. Currently the only change I made
 
 4/24 21:09
 new edit.java, now lacking list parameters
+
+4/24/ 20:09 
+new edit.java, shoudl be complete now
