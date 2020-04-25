@@ -411,7 +411,7 @@ public class Editor extends HttpServlet {
         throws ServletException, IOException {
         //required parameters: username and postid
         //function: delete the corresponding post and go to the list page
-        System.out.println("inside preview_Handler");        
+        System.out.println("inside delete_Handler");        
         String username = request.getParameter("username");
         String post_id_string = request.getParameter("postid");
         if(username==null||post_id_string==null) {
@@ -469,6 +469,7 @@ public class Editor extends HttpServlet {
         String body = request.getParameter("body");
         String username = request.getParameter("username");
         String post_id_string = request.getParameter("postid");
+        System.out.println(title+"\n"+body+"\n"+username+"\n"+post_id_string);
         if(title==null||body==null||username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -517,21 +518,6 @@ public class Editor extends HttpServlet {
             return;
         }
         request.setAttribute("username",username);
-        RequestDispatcher rD =  request.getRequestDispatcher("/list.jsp");
-        if(rD==null){
-            System.out.println("cannot find list.jsp");
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-        try{
-            rD.forward(request,response);
-        }
-        catch (Exception e) {
-            System.out.println("cannot forward the request and response to list.jsp");
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-        //TODO actually get the list
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -571,14 +557,22 @@ public class Editor extends HttpServlet {
             try { rs.close(); } catch (Exception e) {System.out.println("error when closing resultset rs"); }
             try { ps.close(); } catch (Exception e) {System.out.println("error when closing prepareStatement ps"); }
             try { conn.close(); } catch (Exception e) {System.out.println("error when closing connection conn");} 
-            response.setStatus(HttpServletResponse.SC_OK);
+
         }
-
-
-
-
-        response.setStatus(HttpServletResponse.SC_OK);
-        return;
+        RequestDispatcher rD =  request.getRequestDispatcher("/list.jsp");
+        if(rD==null){
+            System.out.println("cannot find list.jsp");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        try{
+            rD.forward(request,response);
+        }
+        catch (Exception e) {
+            System.out.println("cannot forward the request and response to list.jsp");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
     }
         
