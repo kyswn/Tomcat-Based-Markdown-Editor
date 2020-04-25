@@ -17,13 +17,11 @@
         <input type="hidden" name="postid" value='<%= request.getParameter("postid") %>'>
         <div>
             <label for="title"> Title </label>
-            <input type="text" id="title" placeholder="Enter Title" name="title" value='<%= request.getParameter("title")'>
+            <input type="text" id="title" placeholder="Enter Title" name="title" value='<%= request.getAttribute("title")%>'>
         </div>
         <div>
             <label for="body">Body</label>
-            <textarea style="height: 20rem;" id="body" name="body" placeholder="Enter Text">
-                <%= request.getParameter("body")%>
-            </textarea>
+            <textarea style="height: 20rem;" id="body" name="body" placeholder="Enter Text"><%= request.getAttribute("body")%></textarea>
         </div>
     </form>
 </body>

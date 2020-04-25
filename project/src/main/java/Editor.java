@@ -484,8 +484,16 @@ public class Editor extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        request.setAttribute("title",title);
-        request.setAttribute("body",body);
+
+        // render markdown to html string
+        Parser parser = Parser.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+
+        String title_rd = renderer.render(parser.parse(title));
+        String body_rd = renderer.render(parser.parse(body));
+
+        request.setAttribute("title",title_rd);
+        request.setAttribute("body",body_rd);
         RequestDispatcher rD =  request.getRequestDispatcher("/preview.jsp");
         if(rD==null){
             System.out.println("cannot find preview.jsp");
@@ -523,15 +531,6 @@ public class Editor extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        try{
-            rD.forward(request,response);
-        }
-        catch (Exception e) {
-            System.out.println("cannot forward the request and response to list.jsp");
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-        //TODO actually get the list
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -574,8 +573,14 @@ public class Editor extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
         }
 
-
-
+        try{
+            rD.forward(request,response);
+        }
+        catch (Exception e) {
+            System.out.println("cannot forward the request and response to list.jsp");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
         response.setStatus(HttpServletResponse.SC_OK);
         return;
