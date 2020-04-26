@@ -30,5 +30,6 @@
         <h1 id="title"><p> <%= request.getAttribute("renderedTitle") %> </p></h1>
         <div id="body"><p> <%= request.getAttribute("renderedBody") %></p>
     </div>
+    </div>
 </body>
 </html>
