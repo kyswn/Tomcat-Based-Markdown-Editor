@@ -9,7 +9,7 @@
     <form action="post" method="POST">
         <div>
             <button type="submit" name="action" value="save">Save</button>
-            <button type="submit" name="action" value="close">Close</button>
+            <button type="submit" name="action" value="list">Close</button>
             <button type="submit" name="action" value="preview">Preview</button>
             <button type="submit" name="action" value="delete">Delete</button>
         </div>

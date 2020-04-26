@@ -8,13 +8,13 @@
     <h1>Invalid Request</h1>
     
     <h2>Request</h2>
-    <b>action: </b><%= request.getAttribute("action") %><br>
-    <b>username: </b><%= request.getAttribute("username") %><br>
-    <b>postid: </b><%= request.getAttribute("postid") %><br>
-    <b>title: </b><%= request.getAttribute("title") %><br>
-    <b>body: </b><%= request.getAttribute("body") %><br>
+    <b>action: </b><%= request.getParameter("action") %><br>
+    <b>username: </b><%= request.getParameter("username") %><br>
+    <b>postid: </b><%= request.getParameter("postid") %><br>
+    <b>title: </b><%= request.getParameter("title") %><br>
+    <b>body: </b><%= request.getParameter("body") %><br>
 
     <h2>Reason of Error</h2>
-    Invalid action parameter
+    <b><%= request.getAttribute("errorMessage") %></b>
 </body>
 </html>
