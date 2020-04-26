@@ -68,10 +68,14 @@ public class Editor extends HttpServlet {
             break;
             case "save":
             System.out.println("save should use post");
+            request.setAttribute("errorMessage","save should use post");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             break;
             case "delete":
             System.out.println("delete should use post");
+            request.setAttribute("errorMessage","delete should use post");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             break;
             case "preview":
@@ -83,6 +87,8 @@ public class Editor extends HttpServlet {
             break;
             default:
                 System.out.println("Unrecognized action");
+                request.setAttribute("errorMessage","Unrecognized action");
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             
         }
@@ -126,6 +132,8 @@ public class Editor extends HttpServlet {
             break;
             default:
                 System.out.println("Unrecognized action");
+                request.setAttribute("errorMessage","Unrecognized action");
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             
@@ -148,6 +156,8 @@ public class Editor extends HttpServlet {
         String username = request.getParameter("username");
         if(username==null) {
             System.out.println("there is no username");
+            request.setAttribute("errorMessage","there is no username");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -155,6 +165,8 @@ public class Editor extends HttpServlet {
         String post_id_string = request.getParameter("postid");
         if(post_id_string == null) {
             System.out.println("there is no postid");
+            request.setAttribute("errorMessage","there is no postid");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return ;
         }
@@ -165,6 +177,8 @@ public class Editor extends HttpServlet {
         }
         else {
             System.out.println("postid is not integer");
+            request.setAttribute("errorMessage","postid is not integer");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -193,6 +207,8 @@ public class Editor extends HttpServlet {
             catch (Exception e) {
                 System.out.println("cannot forward the request and response to edit.jsp");
                 System.out.println(e.getMessage());
+                request.setAttribute("errorMessage",e.getMessage());
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
@@ -243,6 +259,8 @@ public class Editor extends HttpServlet {
                     if(!rs.next()){
                         //no result
                         System.out.println("username, postid touple doesn't exit in db");
+                        request.setAttribute("errorMessage","username, postid touple doesn't exit in db");
+                        request.getRequestDispatcher("/error.jsp").forward(request,response);
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         return;
 
@@ -260,6 +278,8 @@ public class Editor extends HttpServlet {
 
                 } catch (Exception e) {                    
                     System.err.println("SQLException in open_Handler: " + e.getMessage());
+                    request.setAttribute("errorMessage",e.getMessage());
+                    request.getRequestDispatcher("/error.jsp").forward(request,response);
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 }finally {
@@ -299,6 +319,8 @@ public class Editor extends HttpServlet {
         String post_id_string = request.getParameter("postid");
         if(title==null||body==null||username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
+            request.setAttribute("errorMessage","lacks parameter");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -309,6 +331,8 @@ public class Editor extends HttpServlet {
         }
         else {
             System.out.println("postid is not integer");
+            request.setAttribute("errorMessage","postid is not integer");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -323,8 +347,7 @@ public class Editor extends HttpServlet {
                     "SELECT MAX(postid) AS previousId FROM Posts WHERE username = ? GROUP BY username"
                 );
                 ps.setString(1,username);
-                rs = ps.executeQuery();
-                //TODO DO I need to first close it                                    
+                rs = ps.executeQuery();                                    
                 ps = conn.prepareStatement(
                     "INSERT INTO Posts VALUES(?, ?, ?,?,?,?)"); 
                 ps.setString(1,username);
@@ -345,13 +368,14 @@ public class Editor extends HttpServlet {
                 }
                 ps.executeUpdate();
                 list_Handler(request,response);
-                response.setStatus(HttpServletResponse.SC_OK);
 
 
             }
             catch(Exception e){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 System.out.println("there is some problem when making a new record");
+                request.setAttribute("errorMessage",e.getMessage());
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 System.out.println(e.getMessage());
             }
             finally{
@@ -379,7 +403,7 @@ public class Editor extends HttpServlet {
                 if(!rs.next()){
                     //no result, no changes
                     System.out.println("username, postid touple doesn't exit in db");
-                    response.setStatus(HttpServletResponse.SC_OK);
+                    //response.setStatus(HttpServletResponse.SC_OK);
                     
                 }
                 else{
@@ -394,16 +418,17 @@ public class Editor extends HttpServlet {
                     ps.setString(4,username);
                     ps.setInt(5,postid);
                     ps.executeUpdate();
-
-                    response.setStatus(HttpServletResponse.SC_OK);
                                     
                 }
+                list_Handler(request,response);
 
 
             }
             catch(Exception e){
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 System.out.println("there is some problem when making a new record");
+                request.setAttribute("errorMessage",e.getMessage());
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 System.out.println(e.getMessage());
             }
             finally{
@@ -411,7 +436,7 @@ public class Editor extends HttpServlet {
                 try { rs.close(); } catch (Exception e) {System.out.println("error when closing resultset rs");System.out.println(e.getMessage()); }
                 try { ps.close(); } catch (Exception e) {System.out.println("error when closing prepareStatement ps"); System.out.println(e.getMessage());}
                 try { conn.close(); } catch (Exception e) {System.out.println("error when closing connection conn");System.out.println(e.getMessage());} 
-                list_Handler(request,response);
+                
             }
         }
     }
@@ -424,6 +449,8 @@ public class Editor extends HttpServlet {
         String post_id_string = request.getParameter("postid");
         if(username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
+            request.setAttribute("errorMessage","lacks parameter");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -434,6 +461,8 @@ public class Editor extends HttpServlet {
         }
         else {
             System.out.println("postid is not integer");
+            request.setAttribute("errorMessage","postid no integer");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -449,9 +478,12 @@ public class Editor extends HttpServlet {
             ps.setString(1,username);
             ps.setInt(2,postid);
             ps.executeUpdate();
+            list_Handler(request,response);
         }
          catch(Exception e){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.setAttribute("errorMessage",e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             System.out.println("there is some problem when deleting a new record");
             System.out.println(e.getMessage());
         }
@@ -460,8 +492,6 @@ public class Editor extends HttpServlet {
             try { rs.close(); } catch (Exception e) {System.out.println("error when closing resultset rs"); System.out.println(e.getMessage());}
             try { ps.close(); } catch (Exception e) {System.out.println("error when closing prepareStatement ps"); System.out.println(e.getMessage());}
             try { conn.close(); } catch (Exception e) {System.out.println("error when closing connection conn");System.out.println(e.getMessage());} 
-            response.setStatus(HttpServletResponse.SC_OK);
-            list_Handler(request,response);
         }
     }
 
@@ -481,6 +511,8 @@ public class Editor extends HttpServlet {
         System.out.println(title+"\n"+body+"\n"+username+"\n"+post_id_string);
         if(title==null||body==null||username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
+            request.setAttribute("errorMessage","lacks parameter");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);           
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -503,12 +535,15 @@ public class Editor extends HttpServlet {
 
         String title_rd = renderer.render(parser.parse(title));
         String body_rd = renderer.render(parser.parse(body));
-
-        request.setAttribute("title",title_rd);
-        request.setAttribute("body",body_rd);
+        request.setAttribute("title",title);
+        request.setAttribute("body",body);
+        request.setAttribute("renderedTitle",title_rd);
+        request.setAttribute("renderedBody",body_rd);
         RequestDispatcher rD =  request.getRequestDispatcher("/preview.jsp");
         if(rD==null){
             System.out.println("cannot find preview.jsp");
+            request.setAttribute("errorMessage","cannot find preview.jsp");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -517,6 +552,8 @@ public class Editor extends HttpServlet {
         }
         catch (Exception e) {
             System.out.println("cannot forward the request and response to preview.jsp");
+            request.setAttribute("errorMessage",e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -574,9 +611,11 @@ public class Editor extends HttpServlet {
 
 
         }
-         catch(Exception e){
+        catch(Exception e){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             System.out.println("there is some problem when extracting the list of records");
+            request.setAttribute("errorMessage",e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             System.out.println(e.getMessage());
         }
         finally{
@@ -589,6 +628,8 @@ public class Editor extends HttpServlet {
         RequestDispatcher rD =  request.getRequestDispatcher("/list.jsp");
         if(rD==null){
             System.out.println("cannot find list.jsp");
+            request.setAttribute("errorMessage","cannot find list.jsp");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -597,6 +638,8 @@ public class Editor extends HttpServlet {
         }
         catch (Exception e) {
             System.out.println("cannot forward the request and response to list.jsp");
+            request.setAttribute("errorMessage",e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
