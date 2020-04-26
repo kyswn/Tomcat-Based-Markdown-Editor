@@ -13,8 +13,8 @@
             <button type="submit" name="action" value="preview">Preview</button>
             <button type="submit" name="action" value="delete">Delete</button>
         </div>
-        <input type="hidden" name="username" value='<%= request.getParameter("username") %>'>
-        <input type="hidden" name="postid" value='<%= request.getParameter("postid") %>'>
+        <input type="hidden" name="username" value='<%= request.getAttribute("username") %>'>
+        <input type="hidden" name="postid" value='<%= request.getAttribute("postid") %>'>
         <div>
             <label for="title"> Title </label>
             <input type="text" id="title" placeholder="Enter Title" name="title" value='<%= request.getAttribute("title")%>'>
