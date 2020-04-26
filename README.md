@@ -12,6 +12,9 @@ new edit.java, shoudl be complete now
 4/25 13:05
 fixed the bug in list_handler
 
+4/25 20:56
+basic functionality test passed
+
 TODO: 
 1. change passing value from parameter to attribute FINISHED
 2. figure out after save -> list return status problem (double return?) FINISHED
