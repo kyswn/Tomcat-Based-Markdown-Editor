@@ -15,13 +15,17 @@
     </nav>
     <br>
     <h2>Request</h2>
-    <b>action: </b><%= request.getParameter("action") %><br>
-    <b>username: </b><%= request.getParameter("username") %><br>
-    <b>postid: </b><%= request.getParameter("postid") %><br>
-    <b>title: </b><%= request.getParameter("title") %><br>
-    <b>body: </b><%= request.getParameter("body") %><br>
-
+    <div style="margin-left: auto; margin-right: auto; width: 80%">
+        <b>action: </b><%= request.getAttribute("action") %><br>
+        <b>username: </b><%= request.getAttribute("username") %><br>
+        <b>postid: </b><%= request.getAttribute("postid") %><br>
+        <b>title: </b><%= request.getAttribute("title") %><br>
+        <b>body: </b><%= request.getAttribute("body") %><br>
+    </div>
+    <br>
     <h2>Reason of Error</h2>
-    <b><%= request.getAttribute("errorMessage") %></b>
+    <div style="margin-left: auto; margin-right: auto; width: 80%">
+        <b><%= request.getAttribute("errorMessage") %></b>
+    </div>
 </body>
 </html>

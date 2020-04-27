@@ -60,6 +60,7 @@ public class Editor extends HttpServlet {
         if(action == null){
             System.out.println("there is no action");
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);            
             return;
         } 
         switch(action){
@@ -69,14 +70,14 @@ public class Editor extends HttpServlet {
             case "save":
             System.out.println("save should use post");
             request.setAttribute("errorMessage","save should use post");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             break;
             case "delete":
             System.out.println("delete should use post");
             request.setAttribute("errorMessage","delete should use post");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             break;
             case "preview":
             preview_Handler(request,response);
@@ -88,8 +89,8 @@ public class Editor extends HttpServlet {
             default:
                 System.out.println("Unrecognized action");
                 request.setAttribute("errorMessage","Unrecognized action");
-                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
             
         }
 
@@ -112,6 +113,7 @@ public class Editor extends HttpServlet {
         if(action == null){
             System.out.println("there is no action");
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         } 
         switch(action){
@@ -133,8 +135,8 @@ public class Editor extends HttpServlet {
             default:
                 System.out.println("Unrecognized action");
                 request.setAttribute("errorMessage","Unrecognized action");
-                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                request.getRequestDispatcher("/error.jsp").forward(request,response);                
                 return;
             
         }
@@ -157,8 +159,8 @@ public class Editor extends HttpServlet {
         if(username==null) {
             System.out.println("there is no username");
             request.setAttribute("errorMessage","there is no username");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         request.setAttribute("username",username);
@@ -166,8 +168,8 @@ public class Editor extends HttpServlet {
         if(post_id_string == null) {
             System.out.println("there is no postid");
             request.setAttribute("errorMessage","there is no postid");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return ;
         }
         //check if postid is integer
@@ -178,8 +180,8 @@ public class Editor extends HttpServlet {
         else {
             System.out.println("postid is not integer");
             request.setAttribute("errorMessage","postid is not integer");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         request.setAttribute("postid",postid);
@@ -199,6 +201,7 @@ public class Editor extends HttpServlet {
             if(rD==null){
                 System.out.println("cannot find edit.jsp");
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 return;
             }
             try{
@@ -208,8 +211,8 @@ public class Editor extends HttpServlet {
                 System.out.println("cannot forward the request and response to edit.jsp");
                 System.out.println(e.getMessage());
                 request.setAttribute("errorMessage",e.getMessage());
-                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
                 return;
             }
             response.setStatus(HttpServletResponse.SC_OK);
@@ -226,6 +229,7 @@ public class Editor extends HttpServlet {
                 if(rD==null){
                     System.out.println("cannot find edit.jsp");
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    request.getRequestDispatcher("/error.jsp").forward(request,response);
                     return;
                 }
                 try{
@@ -235,6 +239,7 @@ public class Editor extends HttpServlet {
                     System.out.println("cannot forward the request and response to edit.jsp");
                     System.out.println(e.getMessage());
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    request.getRequestDispatcher("/error.jsp").forward(request,response);
                     return ;
                 }
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -260,8 +265,8 @@ public class Editor extends HttpServlet {
                         //no result
                         System.out.println("username, postid touple doesn't exit in db");
                         request.setAttribute("errorMessage","username, postid touple doesn't exit in db");
-                        request.getRequestDispatcher("/error.jsp").forward(request,response);
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        request.getRequestDispatcher("/error.jsp").forward(request,response);
                         return;
 
                     }
@@ -270,17 +275,17 @@ public class Editor extends HttpServlet {
                         title = rs.getString("title");
                         body = rs.getString("body");
                         request.setAttribute("title",title);
-                        request.setAttribute("body",body);
-                        request.getRequestDispatcher("/edit.jsp").forward(request,response);
+                        request.setAttribute("body",body);                        
                         response.setStatus(HttpServletResponse.SC_OK);
+                        request.getRequestDispatcher("/edit.jsp").forward(request,response);
                         return;                        
                     }
 
                 } catch (Exception e) {                    
                     System.err.println("SQLException in open_Handler: " + e.getMessage());
                     request.setAttribute("errorMessage",e.getMessage());
-                    request.getRequestDispatcher("/error.jsp").forward(request,response);
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    request.getRequestDispatcher("/error.jsp").forward(request,response);
                     return;
                 }finally {
                     System.out.println("int the finally block closing connections");
@@ -320,8 +325,8 @@ public class Editor extends HttpServlet {
         if(title==null||body==null||username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
             request.setAttribute("errorMessage","lacks parameter");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         //check if postid is integer
@@ -332,8 +337,8 @@ public class Editor extends HttpServlet {
         else {
             System.out.println("postid is not integer");
             request.setAttribute("errorMessage","postid is not integer");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         if(postid<=0){
@@ -450,8 +455,8 @@ public class Editor extends HttpServlet {
         if(username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
             request.setAttribute("errorMessage","lacks parameter");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         //check if postid is integer
@@ -462,8 +467,8 @@ public class Editor extends HttpServlet {
         else {
             System.out.println("postid is not integer");
             request.setAttribute("errorMessage","postid no integer");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         Connection conn = null;
@@ -511,9 +516,9 @@ public class Editor extends HttpServlet {
         System.out.println(title+"\n"+body+"\n"+username+"\n"+post_id_string);
         if(title==null||body==null||username==null||post_id_string==null) {
             System.out.println("lacks parameter ");
-            request.setAttribute("errorMessage","lacks parameter");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);           
+            request.setAttribute("errorMessage","lacks parameter");           
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         //check if postid is integer
@@ -524,6 +529,7 @@ public class Editor extends HttpServlet {
         else {
             System.out.println("postid is not integer");
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         request.setAttribute("username",username);
@@ -543,8 +549,8 @@ public class Editor extends HttpServlet {
         if(rD==null){
             System.out.println("cannot find preview.jsp");
             request.setAttribute("errorMessage","cannot find preview.jsp");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         try{
@@ -553,9 +559,9 @@ public class Editor extends HttpServlet {
         catch (Exception e) {
             System.out.println("cannot forward the request and response to preview.jsp");
             request.setAttribute("errorMessage",e.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         response.setStatus(HttpServletResponse.SC_OK);
@@ -572,6 +578,7 @@ public class Editor extends HttpServlet {
         if(username ==  null){
             System.out.println("list_Handler has to have parameter usernmae ");
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         request.setAttribute("username",username);
@@ -629,8 +636,8 @@ public class Editor extends HttpServlet {
         if(rD==null){
             System.out.println("cannot find list.jsp");
             request.setAttribute("errorMessage","cannot find list.jsp");
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
         try{
@@ -639,17 +646,14 @@ public class Editor extends HttpServlet {
         catch (Exception e) {
             System.out.println("cannot forward the request and response to list.jsp");
             request.setAttribute("errorMessage",e.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request,response);
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
             return;
         }
 
     }
         
-
-
-
 
 }
 
