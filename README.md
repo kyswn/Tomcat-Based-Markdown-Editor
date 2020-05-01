@@ -1,4 +1,3 @@
-# cs144project2
 
 This is a tomcat based website for markdown posts
 
